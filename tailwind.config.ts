@@ -56,13 +56,23 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        slideUp: {
+        accordionUp: {
           "0%": { transform: "translateY(20px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        accordionDown: {
+          from: { height: "0px" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        slideUp: {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0px" },
         },
       },
       animation: {
         slideUp: "slideUp 0.7s ease-out forwards",
+        accordionDown: "accordionDown 300ms cubic-bezier(0.87, 0, 0.13, 1)",
+        accordionUp: "accordionUp 300ms cubic-bezier(0.87, 0, 0.13, 1)",
       },
     },
   },

@@ -24,7 +24,7 @@ export default async function SignUpPage() {
       <SignUpForm />
 
       <div className='text-center'>
-        <Button variant='link'>
+        <Button variant='link' asChild>
           <Link href={APP_PATH.SIGN_IN}>Already have an account? Sign in</Link>
         </Button>
       </div>

@@ -51,7 +51,7 @@ export default function AuthErrorPage() {
         </div>
 
         <div className='text-center'>
-          <Button variant='link'>
+          <Button variant='link' asChild>
             <Link className='text-base' href={APP_PATH.ROOT}>
               Go back to Home
             </Link>

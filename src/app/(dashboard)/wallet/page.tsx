@@ -1,9 +1,6 @@
 import WalletForm from "@/components/forms/markets/wallet-form";
-import { runExample } from "@/lib/blockfrost-api";
-runExample();
-// addr1q9nz9p58wxmlppzrc0qqqham9kjfm9w92pr636jx8wrvajp04z4aj45enu8pkjlpqjr8wje6ghvxm6aztnqz6720uvrsx7uyn3
 
-export default function Market() {
+export default async function Wallet() {
   return (
     <section className='container my-4 py-20 xl:pt-15'>
       <h1 className='mt-6 font-bold leading-[1.1] text-4xl md:text-5xl lg:text-6xl animate-slideUp [animation-delay:200ms] opacity-0'>

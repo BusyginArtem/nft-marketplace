@@ -51,7 +51,7 @@ export default async function Header() {
             {session ? (
               <SignOut />
             ) : (
-              <Button className='rounded-lg'>
+              <Button className='rounded-lg' asChild>
                 <Link href={APP_PATH.SIGN_IN}>Sign In</Link>
               </Button>
             )}

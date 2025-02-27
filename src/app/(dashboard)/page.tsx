@@ -20,7 +20,7 @@ export default function Dashboard() {
       </div>
 
       <div className='mt-10 flex flex-wrap gap-4 justify-center animate-slideUp [animation-delay:400ms] opacity-0'>
-        <Button className='rounded-lg'>
+        <Button className='rounded-lg' asChild>
           <Link href={APP_PATH.MARKETS}>Browse Market</Link>
         </Button>
       </div>

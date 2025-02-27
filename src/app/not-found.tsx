@@ -10,7 +10,7 @@ export default function NotFound() {
           Page not found
         </h1>
         <div className='mt-5 text-center'>
-          <Button size='lg'>
+          <Button size='lg' asChild>
             <Link href='/'>Back to Home page</Link>
           </Button>
         </div>

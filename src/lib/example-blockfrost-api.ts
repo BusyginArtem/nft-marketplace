@@ -1,10 +1,15 @@
+import env from "@/env";
 import { BlockFrostAPI } from "@blockfrost/blockfrost-js";
 
-import env from "@/env";
+
+// addr1q9nz9p58wxmlppzrc0qqqham9kjfm9w92pr636jx8wrvajp04z4aj45enu8pkjlpqjr8wje6ghvxm6aztnqz6720uvrsx7uyn3
+
 
 const api = new BlockFrostAPI({
   projectId: env.BLOCK_FROST_PROJECT_ID,
 });
+
+
 
 export async function runExample() {
   try {
