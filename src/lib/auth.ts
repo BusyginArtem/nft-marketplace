@@ -11,12 +11,13 @@ import type { UserEntity } from "@/lib/definitions";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // adapter: MongoDBAdapter(client),
+  debug: true,
   session: {
     strategy: "jwt",
   },
   pages: {
     error: "/auth-error",
-    signIn: "/auth-error",
+    signIn: "/sign-in",
   },
   callbacks: {
     async jwt({ token, account }) {
@@ -41,49 +42,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: {},
         password: {},
       },
-      async authorize(credentials, req) {
-        console.log('credentials >>>>>>>>>>>>>>>>>>>>>', credentials)
-        console.log("req >>>>>>>>>>>>>>>>>>>>>", req);
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Missing email or password");
+      async authorize(credentials) {
+        const conn: MongoClient | undefined = await connectMongoDb();
+        const db = conn.db();
+
+        const user: UserEntity | null = await db.collection<UserEntity>("users").findOne({
+          email: credentials.email!,
+        });
+
+        if (!user) {
+          return null;
         }
 
-        let conn: MongoClient | undefined;
-        let user: UserEntity | null = null;
+        const isMatch = await verifyPasswords(credentials.password as string, user.password);
 
-        try {
-          conn = await connectMongoDb();
-
-          if (!conn) {
-            throw new Error("Could not connect to database.");
-          }
-
-          const db = conn.db();
-
-          user = await db.collection<UserEntity>("users").findOne({
-            email: credentials.email,
-          });
-
-          if (!user) {
-            throw new Error("User not found");
-          }
-
-          const isMatch = await verifyPasswords(credentials.password as string, user.password);
-
-          if (!isMatch) {
-            throw new Error("Email or password is incorrect.");
-          }
-
-          return {
-            id: user._id.toString(),
-            email: user.email,
-          };
-        } catch (error) {
-          console.error("Authorization error:", error);
-          throw new Error("Authentication failed");
-        } finally {
-          conn?.close();
+        if (!isMatch) {
+          return null;
         }
+
+        return {
+          id: user._id.toString(),
+          email: user.email,
+        };
       },
     }),
   ],

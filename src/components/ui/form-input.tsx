@@ -9,8 +9,6 @@ type FormInputProps = React.ComponentProps<"input"> & {
 };
 
 const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(({ error, ...props }, ref) => {
-  console.log(error);
-
   return (
     <div>
       <Input className={clsx({ "focus-visible:outline-red-400": !!error?.message })} ref={ref} {...props} />

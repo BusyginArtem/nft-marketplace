@@ -3,11 +3,14 @@
 import { MongoClient, MongoError } from "mongodb";
 
 import { hashPassword } from "@/lib/auth-password";
-import { FormState } from "@/lib/definitions";
+import { AuthFormState } from "@/lib/definitions";
 import { connectMongoDb } from "@/lib/mongodb";
 import { signInFormSchema, signUpFormSchema } from "@/lib/validation";
+import { signIn } from "@/lib/auth";
+import { CredentialsSignin } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
-export async function signInAction(state: FormState, formData: FormData) {
+export async function signInAction(_state: AuthFormState, formData: FormData) {
   const validatedFields = signInFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -20,23 +23,40 @@ export async function signInAction(state: FormState, formData: FormData) {
     };
   }
 
-  // try {
-  //   await signIn("credentials", formData);
+  try {
+    await signIn("credentials", formData);
 
-  return {
-    success: true,
-    fields: validatedFields.data,
-  };
-  // } catch (error) {
-  //   console.log("error >>>>>>>>>>>>>>>>>>>>>", error);
-  //   return {
-  //     success: false,
-  //     message: "Something went wrong. Try again.",
-  //   };
-  // }
+    return {
+      success: true,
+      fields: validatedFields.data,
+    };
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
+
+    if (error instanceof CredentialsSignin) {
+      return {
+        success: false,
+        message: "Email or password is incorrect.",
+      };
+    }
+
+    if (error instanceof Error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: false,
+      message: "Something went wrong. Try again.",
+    };
+  }
 }
 
-export async function signUpAction(state: FormState, formData: FormData) {
+export async function signUpAction(_state: AuthFormState, formData: FormData) {
   const validatedFields = signUpFormSchema.safeParse({
     email: formData.get("email"),
     password: formData.get("password"),
@@ -77,7 +97,7 @@ export async function signUpAction(state: FormState, formData: FormData) {
       password: await hashPassword(password),
     });
 
-    // await signIn("credentials", formData);
+    await signIn("credentials", formData);
 
     conn.close();
 
@@ -86,7 +106,9 @@ export async function signUpAction(state: FormState, formData: FormData) {
       fields: validatedFields.data,
     };
   } catch (error) {
-    conn.close();
+    if (isRedirectError(error)) {
+      throw error;
+    }
 
     if (error instanceof MongoError && "code" in error && error.code === 11000) {
       return {
@@ -101,5 +123,7 @@ export async function signUpAction(state: FormState, formData: FormData) {
       success: false,
       message: "Something went wrong. Try again.",
     };
+  } finally {
+    conn.close();
   }
 }

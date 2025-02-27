@@ -18,5 +18,10 @@ export const signInFormSchema = z.object({
   password: z.string().trim(),
 });
 
+export const walletFormSchema = z.object({
+  address: z.string().trim(),
+});
+
 export type SignInFormSchema = z.infer<typeof signInFormSchema>;
 export type SignUpFormSchema = z.infer<typeof signUpFormSchema>;
+export type WalletFormSchema = z.infer<typeof walletFormSchema>;

@@ -1,4 +1,10 @@
-export type FormState =
+export interface UserEntity {
+  _id: string;
+  password: string;
+  email: string;
+}
+
+export type AuthFormState =
   | {
       errors?: {
         email?: string[];
@@ -10,8 +16,13 @@ export type FormState =
     }
   | undefined;
 
-export interface UserEntity {
-  _id: string;
-  password: string;
-  email: string;
-}
+export type WalletFormState =
+  | {
+      errors?: {
+        address?: string[];
+      };
+      message?: string;
+      fields?: Record<string, string>;
+      success: boolean;
+    }
+  | undefined;

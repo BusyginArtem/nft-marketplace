@@ -2,20 +2,16 @@
 
 import { startTransition, useActionState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 
 import { type SignUpFormSchema, signUpFormSchema } from "@/lib/validation";
-import { signInAction } from "@/actions/auth";
-import { FormState } from "@/lib/definitions";
-import Button from "./ui/button";
-import FormInput from "./ui/form-input";
+import { signUpAction } from "@/actions/auth";
+import { AuthFormState } from "@/lib/definitions";
+import FormInput from "../../ui/form-input";
+import Button from "../../ui/button";
 
-export default function SignInForm() {
-  const router = useRouter();
-
-  const [formState, formAction, isPending] = useActionState<FormState, FormData>(signInAction, undefined);
+export default function SignUpForm() {
+  const [formState, formAction, isPending] = useActionState<AuthFormState, FormData>(signUpAction, undefined);
 
   const form = useForm<SignUpFormSchema>({
     resolver: zodResolver(signUpFormSchema),
@@ -28,8 +24,10 @@ export default function SignInForm() {
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (formState?.success) {
-      signIn("credentials", formState.fields).then(() => router.replace("/"));
+    if (!formState?.success) {
+      if (formState?.errors?.email) {
+        form.setError("email", { type: "custom", message: formState.errors.email?.[0] });
+      }
     }
   }, [formState]);
 
@@ -64,7 +62,7 @@ export default function SignInForm() {
       />
 
       <Button disabled={isPending} type='submit' className='w-full'>
-        Sign In
+        Sign Up
       </Button>
 
       <span className='text-red-400 text-sm h-4 inline-block w-full'>

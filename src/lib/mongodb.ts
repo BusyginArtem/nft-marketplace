@@ -35,8 +35,8 @@ async function connectMongoDb() {
     return client.connect();
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error.message);
-      throw new Error(error.message);
+      console.error(error.message);
+      throw error;
     } else {
       throw new Error("Could not connect to database.");
     }

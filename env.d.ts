@@ -6,6 +6,7 @@ namespace NodeJS {
     GITHUB_ID: string;
     GITHUB_SECRET: string;
     NEXTAUTH_URL: string;
+    BLOCK_FROST_PROJECT_ID: string;
     NODE_ENV: "development" | "production" | "test"; // Default Next.js environments
   }
 }

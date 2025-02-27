@@ -1,16 +1,11 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import Button from "@/components/ui/button";
-import SignUpForm from "@/components/sign-up-form";
-import GithubSignIn from "@/components/github-sign-in";
-import { auth } from "@/lib/auth";
+import SignUpForm from "@/components/forms/auth/sign-up-form";
+import GithubSignIn from "@/components/forms/auth/github-sign-in";
+import { APP_PATH } from "@/lib/constants";
 
 export default async function SignUpPage() {
-  const session = await auth();
-
-  if (session) redirect("/");
-
   return (
     <div className='w-full max-w-sm mx-auto space-y-6 border-border border-2 p-8 shadow-md rounded-sm'>
       <h1 className='text-2xl font-bold text-center mb-6'>Create Account</h1>
@@ -30,7 +25,7 @@ export default async function SignUpPage() {
 
       <div className='text-center'>
         <Button variant='link'>
-          <Link href='/sign-in'>Already have an account? Sign in</Link>
+          <Link href={APP_PATH.SIGN_IN}>Already have an account? Sign in</Link>
         </Button>
       </div>
     </div>

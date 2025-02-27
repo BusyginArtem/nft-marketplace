@@ -5,12 +5,14 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 
 import ClientSessionProvider from "@/lib/client-session-provider";
+import { cn } from "@/lib/utils";
 
 const roboto = Roboto({
   weight: ["500", "700", "900"],
   style: ["normal", "italic"],
   subsets: ["latin"],
   display: "swap",
+  variable: "--roboto",
 });
 
 export const metadata: Metadata = {
@@ -25,10 +27,8 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`antialiased ${roboto.className}`}>
-        <ClientSessionProvider>
-          <main className='flex items-center justify-center min-h-screen bg-gray-100'>{children}</main>
-        </ClientSessionProvider>
+      <body className={cn("min-h-screen bg-background antialiased overscroll-none", roboto.variable)}>
+        <ClientSessionProvider>{children}</ClientSessionProvider>
 
         <Toaster position='bottom-right' />
       </body>
