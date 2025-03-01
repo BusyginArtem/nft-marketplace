@@ -27,7 +27,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={cn("min-h-screen bg-background antialiased overscroll-none", roboto.variable)}>
+      <body className={cn("min-h-screen bg-background antialiased overscroll-none scrollbar-overlay", roboto.variable)}>
         <ClientSessionProvider>{children}</ClientSessionProvider>
 
         <Toaster position='bottom-right' />

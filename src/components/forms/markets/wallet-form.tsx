@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { type WalletFormSchema, walletFormSchema } from "@/lib/validation";
 import { WalletFormState } from "@/lib/definitions";
-import { connectWalletAction } from "@/actions/markets";
+import { connectWalletAction } from "@/actions/wallet";
 import Button from "../../ui/button";
 import FormInput from "../../ui/form-input";
 

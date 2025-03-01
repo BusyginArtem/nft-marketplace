@@ -1,14 +1,15 @@
 "use server";
 
 import { MongoClient, MongoError } from "mongodb";
+import { cookies } from "next/headers";
+import { CredentialsSignin } from "next-auth";
+import { isRedirectError } from "next/dist/client/components/redirect-error";
 
 import { hashPassword } from "@/lib/auth-password";
 import { AuthFormState } from "@/lib/definitions";
 import { connectMongoDb } from "@/lib/mongodb";
 import { signInFormSchema, signUpFormSchema } from "@/lib/validation";
-import { signIn } from "@/lib/auth";
-import { CredentialsSignin } from "next-auth";
-import { isRedirectError } from "next/dist/client/components/redirect-error";
+import { signIn, signOut } from "@/lib/auth";
 
 export async function signInAction(_state: AuthFormState, formData: FormData) {
   const validatedFields = signInFormSchema.safeParse({
@@ -127,3 +128,9 @@ export async function signUpAction(_state: AuthFormState, formData: FormData) {
     conn.close();
   }
 }
+
+export const signOutAction = async () => {
+  (await cookies()).delete("address");
+
+  await signOut();
+};

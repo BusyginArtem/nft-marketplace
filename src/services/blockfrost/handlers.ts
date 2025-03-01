@@ -1,4 +1,12 @@
-import type { Asset, AssetIdentifier, AssetsRawData } from "@/lib/definitions";
+import type {
+  AddressIdentifier,
+  AddressInfo,
+  Asset,
+  AssetIdentifier,
+  AssetsRawData,
+  Pagination,
+  StakeAccount,
+} from "@/lib/definitions";
 import { blockfrostAPIInstance /*, ipfsInstance*/ } from "./blockfrostService";
 
 export async function getAssetsIdentifiers({
@@ -11,7 +19,7 @@ export async function getAssetsIdentifiers({
   try {
     const assetsRawData = (await blockfrostAPIInstance.assets({ count, page })) as AssetsRawData[];
 
-    return assetsRawData.filter(({ quantity }) => quantity).map(({ asset }) => asset);
+    return assetsRawData.map(({ asset }) => asset);
   } catch (error) {
     console.log(error);
 
@@ -35,9 +43,18 @@ export async function getAssetsInfo({ identifiers }: { identifiers: AssetIdentif
     const assetsInfo: Asset[] = [];
     const failedOperations = [];
 
-    const assetRawPromises = identifiers.map(
-      async (identifier) => (await blockfrostAPIInstance.assetsById(identifier)) as Asset
-    );
+    const assetRawPromises = identifiers.map(async (identifier) => {
+      const asset = (await blockfrostAPIInstance.assetsById(identifier)) as Asset;
+
+      const assetHistory = await blockfrostAPIInstance.assetsHistory(`${asset.policy_id}${asset.asset_name}`, {
+        count: 10,
+      });
+
+      return {
+        ...asset,
+        history: assetHistory,
+      };
+    });
     const assetSettledPromises = await Promise.allSettled(assetRawPromises);
 
     for (const assetPromise of assetSettledPromises) {
@@ -60,12 +77,29 @@ export async function getAssetsInfo({ identifiers }: { identifiers: AssetIdentif
   }
 }
 
-export async function getAssetsData({ count = 20, page = 1 }: { count?: number; page?: number }) {
+export async function getAssetsData({ count = 20, page = 1 }: Pagination) {
   try {
     const assetIdentifiers = await getAssetsIdentifiers({ page, count });
     const assets = await getAssetsInfo({ identifiers: assetIdentifiers });
 
     return assets;
+  } catch (error) {
+    console.log(error);
+
+    throw error;
+  }
+}
+
+export async function getAddressData({ address }: { address: AddressIdentifier }) {
+  try {
+    
+    const { stake_address, ...addressData } = (await blockfrostAPIInstance.addressesExtended(address)) as AddressInfo;
+    const stakeAccount = (await blockfrostAPIInstance.accounts(stake_address)) as StakeAccount;
+
+    return {
+      ...addressData,
+      stake: stakeAccount,
+    };
   } catch (error) {
     console.log(error);
 

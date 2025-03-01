@@ -19,7 +19,7 @@ const navItems = [
     target: false,
   },
   {
-    label: "Markets",
+    label: "Market",
     href: APP_PATH.MARKETS,
     target: false,
   },

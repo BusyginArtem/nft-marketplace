@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { PluginAPI } from "tailwindcss/types/config";
 
 export default {
   content: [
@@ -56,7 +57,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        accordionUp: {
+        slideUp: {
           "0%": { transform: "translateY(20px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
@@ -64,7 +65,7 @@ export default {
           from: { height: "0px" },
           to: { height: "var(--radix-accordion-content-height)" },
         },
-        slideUp: {
+        accordionUp: {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0px" },
         },
@@ -76,5 +77,28 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }: { addUtilities: PluginAPI["addUtilities"] }) {
+      addUtilities({
+        ".scrollbar-overlay": {
+          "scrollbar-width": "thin", // Firefox
+          "&::-webkit-scrollbar": {
+            width: "8px", // Chrome/Safari
+            background: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "rgba(136, 136, 136, 0.5)",
+            "border-radius": "4px",
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: "rgba(85, 85, 85, 0.7)",
+          },
+          "-ms-overflow-style": "none", // IE/Edge hide default scrollbar
+          "&": {
+            "overflow": "-moz-scrollbars-none", // Firefox hide default
+          },
+        },
+      });
+    },
+  ],
 } satisfies Config;
