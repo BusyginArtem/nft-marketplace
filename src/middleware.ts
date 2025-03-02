@@ -1,14 +1,35 @@
-import { getToken } from "next-auth/jwt";
+// import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import env from "./env";
+// import env from "./env";
+import { auth } from "./lib/auth";
+
+// export async function middleware(req: NextRequest) {
+//   const token = await getToken({ req, secret: env.AUTH_SECRET });
+
+//   if (!token) {
+//     return NextResponse.redirect(new URL("/sign-in", req.url));
+//   }
+
+//   return NextResponse.next();
+// }
+
+const protectedRoutes = ["/wallet"];
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: env.AUTH_SECRET });
+  const { pathname } = req.nextUrl;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/sign-in", req.url));
+  const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
+
+  if (isProtected) {
+    const session = await auth();
+
+    if (!session) {
+      const signInUrl = new URL("/sign-in", req.url);
+      signInUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(signInUrl);
+    }
   }
 
   return NextResponse.next();
