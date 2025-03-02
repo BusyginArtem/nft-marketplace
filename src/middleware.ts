@@ -24,6 +24,7 @@ export async function middleware(req: NextRequest) {
 
   if (isProtected) {
     const session = await auth();
+    console.log('session >>>>>>>>>>>>>>>>>>>>>', session)
 
     if (!session) {
       return NextResponse.redirect(new URL("/sign-in", req.url));
