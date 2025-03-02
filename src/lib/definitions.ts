@@ -41,7 +41,7 @@ export interface AssetsRawData {
 }
 
 export interface OnchainMetadata {
-  [key: string]: any;
+  [key: string]: string | null | number;
 }
 
 export interface Metadata {

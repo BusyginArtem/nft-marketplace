@@ -29,7 +29,7 @@ export default function SignUpForm() {
         form.setError("email", { type: "custom", message: formState.errors.email?.[0] });
       }
     }
-  }, [formState]);
+  }, [formState, form]);
 
   return (
     <form

@@ -6,6 +6,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 
 import Button from "@/components/ui/button";
 import { APP_PATH } from "@/lib/constants";
+import { Suspense } from "react";
+import Loading from "@/components/loading";
 
 enum Error {
   Configuration = "Configuration",
@@ -30,6 +32,15 @@ const errorMap = {
   ),
 };
 
+function ErrorMap() {
+  const search = useSearchParams();
+  const error = search.get("error") as Error;
+
+  return (
+    <div className='font-normal text-gray-400'>{errorMap[error] || "Please contact us if this error persists."}</div>
+  );
+}
+
 export default function AuthErrorPage() {
   const session = useSession();
   const router = useRouter();
@@ -38,17 +49,14 @@ export default function AuthErrorPage() {
     router.replace(APP_PATH.ROOT);
   }
 
-  const search = useSearchParams();
-  const error = search.get("error") as Error;
-
   return (
     <section className='flex w-full h-screen flex-col items-center justify-center'>
       <div className='block max-w-lg rounded-lg border p-6 text-center'>
         <h5 className='mb-2 font-bold text-[2rem] leading-[1.12]'>Something went wrong</h5>
 
-        <div className='font-normal text-gray-400'>
-          {errorMap[error] || "Please contact us if this error persists."}
-        </div>
+        <Suspense fallback={<Loading active />}>
+          <ErrorMap />
+        </Suspense>
 
         <div className='text-center'>
           <Button variant='link' asChild>

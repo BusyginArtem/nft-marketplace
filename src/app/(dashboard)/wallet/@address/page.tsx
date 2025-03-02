@@ -41,7 +41,7 @@ export default async function Address() {
 
             <p className='text-lg'>
               <strong>Total Amount:</strong>{" "}
-              {(amount?.reduce((sum: number, a: any) => sum + Number(a.quantity), 0) / 1_000_000).toFixed(6)} ADA
+              {(amount?.reduce((sum: number, amount: Amount) => sum + Number(amount.quantity), 0) / 1_000_000).toFixed(6)} ADA
             </p>
             <div>
               <strong className='text-lg'>Assets</strong>{" "}
