@@ -1,17 +1,16 @@
 import NextAuth from "next-auth";
 import type { MongoClient } from "mongodb";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GithubProvider from "next-auth/providers/github";
 
 import { /*client,*/ connectMongoDb } from "@/lib/mongodb";
-import env from "@/env";
 import { verifyPasswords } from "@/lib/auth-password";
 // import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import type { UserEntity } from "@/lib/definitions";
+import authConfig from "./auth.config";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   // adapter: MongoDBAdapter(client),
-  debug: true,
+  // debug: true,
   session: {
     strategy: "jwt",
   },
@@ -35,10 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   providers: [
-    GithubProvider({
-      clientId: env.GITHUB_ID,
-      clientSecret: env.GITHUB_SECRET,
-    }),
+    ...authConfig.providers,
     CredentialsProvider({
       credentials: {
         email: {},

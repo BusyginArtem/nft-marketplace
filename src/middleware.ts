@@ -1,43 +1,59 @@
-import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
+import NextAuth from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
 
-// import { auth } from "./lib/auth";
-// import { Session } from "next-auth";
+import authConfig from "./lib/auth.config";
 
-export async function middleware() {
-  // const session = await auth();
+const protectedRoutes = ["/wallet"];
+const authRoutes = ["/sign-in", "/sign-up"];
 
-  // if (!session) {
-  //   return NextResponse.redirect(new URL("/sign-in", req.url));
-  // }
+export const { auth } = NextAuth(authConfig);
 
-  return NextResponse.next();
-}
-
-// const protectedRoutes = ["/wallet"];
-
-// export default auth(async function middleware(req: NextRequest & { auth: Session | null }) {
-//   const { pathname } = req.nextUrl;
+// export default middleware((request: NextRequest & { auth: Session | null }) => {
+//   const isLoggedIn = !!request.auth?.user;
+//   const { pathname } = request.nextUrl;
 
 //   const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
+//   const isAuthPage = authRoutes.some((route) => pathname.startsWith(route));
 
-//   if (isProtected) {
-//     const session = req.auth;
+//   if (isLoggedIn && isAuthPage) {
+//     return NextResponse.redirect(new URL("/", request.url));
+//   }
 
-//     if (!session) {
-//       const signInUrl = new URL("/sign-in", req.url);
-//       signInUrl.searchParams.set("callbackUrl", pathname);
-//       return NextResponse.redirect(signInUrl);
-//     }
-
-//     console.log(`Authenticated request to ${pathname} by ${session.user?.email}`);
+//   if (!isLoggedIn && isProtected) {
+//     return NextResponse.redirect(new URL("/sign-in", request.url));
 //   }
 
 //   return NextResponse.next();
 // });
 
-// export const config = {
-//   matcher: ["/wallet(.*)"],
-// };
+export default async function middleware(request: NextRequest) {
+  const { pathname, searchParams } = request.nextUrl;
 
-// export const runtime = "nodejs";
+  const session = await auth();
+  
+  const callbackUrl = searchParams.get("callbackUrl");
+
+  const isProtected = protectedRoutes.some((route) => pathname.startsWith(route));
+  const isAuthPage = authRoutes.some((route) => pathname.startsWith(route));
+
+  if (session && isAuthPage) {
+    if (callbackUrl) {
+      return NextResponse.redirect(new URL(callbackUrl, request.url));
+    } else {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  if (!session && isProtected) {
+    const signInUrl = new URL("/sign-in", request.url);
+    signInUrl.searchParams.set("callbackUrl", pathname);
+
+    return NextResponse.redirect(signInUrl);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/wallet(.*)", "/sign-in", "/sign-up"],
+};

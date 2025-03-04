@@ -34,7 +34,7 @@ const errorMap = {
 
 function ErrorMap() {
   const search = useSearchParams();
-  const error = search.get("error") as Error;
+  const error = search?.get("error") as Error;
 
   return (
     <div className='font-normal text-gray-400'>{errorMap[error] || "Please contact us if this error persists."}</div>
