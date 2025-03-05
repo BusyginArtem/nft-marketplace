@@ -104,3 +104,11 @@ export interface AddressInfo {
   type: "byron" | "shelley";
   script: boolean;
 }
+
+type NavLabel = "Home" | "Wallet" | "Market";
+
+export type NavItem = {
+  label: NavLabel;
+  href: string;
+  target: boolean;
+};

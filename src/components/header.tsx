@@ -5,25 +5,8 @@ import Button from "./ui/button";
 import { auth } from "@/lib/auth";
 
 import { SignOut } from "./forms/auth/sign-out";
-import { APP_PATH } from "@/lib/constants";
-
-const navItems = [
-  {
-    label: "Home",
-    href: APP_PATH.ROOT,
-    target: false,
-  },
-  {
-    label: "Wallet",
-    href: APP_PATH.WALLET,
-    target: false,
-  },
-  {
-    label: "Market",
-    href: APP_PATH.MARKETS,
-    target: false,
-  },
-];
+import HeaderLink from "./header-link";
+import { APP_PATH, NAV_ITEMS } from "@/lib/constants";
 
 export default async function Header() {
   const session = await auth();
@@ -36,16 +19,8 @@ export default async function Header() {
         </Link>
         <div className='flex gap-7 items-center justify-between'>
           <div className='flex items-center gap-7 text-primary'>
-            {navItems.map((navItem) => (
-              <Link
-                key={navItem.label}
-                href={navItem.href}
-                target={navItem.target ? "_blank" : undefined}
-                rel={navItem.target ? "noopener noreferrer" : undefined}
-                className='transition-colors hover:text-accent-foreground/80 text-accent-foreground text-sm font-medium'
-              >
-                {navItem.label}
-              </Link>
+            {NAV_ITEMS.map((navItem) => (
+              <HeaderLink key={navItem.label} href={navItem.href} label={navItem.label} target={navItem.target} />
             ))}
 
             {session ? (
