@@ -1,13 +1,21 @@
-FROM node
+# Use official Node.js image as the base
+FROM node:18-alpine
 
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-COPY package*.json ./
-
+# Copy package.json and install dependencies
+COPY package.json package-lock.json* ./
 RUN npm install
 
+# Copy the rest of the application code
 COPY . .
 
-EXPOSE 4000
+# Build the Next.js app
+RUN npm run build
 
-CMD [ "npm", "dev" ]
+# Expose port 3000
+EXPOSE 3000
+
+# Start the app
+CMD ["npm", "start"]
