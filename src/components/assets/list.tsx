@@ -1,6 +1,8 @@
 import { Asset } from "@/lib/definitions";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import Button from "../ui/button";
+import Link from "next/link";
+import { APP_PATH } from "@/lib/constants";
 
 type Props = {
   assets: Asset[];
@@ -19,7 +21,7 @@ export default function List({ assets }: Props) {
                   {asset.onchain_metadata?.name || asset.metadata?.name || asset.asset_name}
                 </p>
               </div>
-              
+
               <div className='flex flex-col gap-2 overflow-hidden px-2'>
                 <p className='uppercase text-xs font-medium'>Fingerprint</p>
                 <p className='text-lg font-semibold w-full truncate'>{asset.fingerprint}</p>
@@ -31,7 +33,10 @@ export default function List({ assets }: Props) {
               </div>
 
               <div className='self-center justify-self-center'>
-                <Button onClick={(e) => e.stopPropagation()}>BUY</Button>
+                {/* <Button onClick={(e) => e.stopPropagation()}>BUY</Button> */}
+                <Button className='rounded-lg' asChild>
+                  <Link href={APP_PATH.WALLET}>BUY</Link>
+                </Button>
               </div>
             </div>
           </AccordionTrigger>
