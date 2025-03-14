@@ -95,7 +95,7 @@ export default {
           },
           "-ms-overflow-style": "none", // IE/Edge hide default scrollbar
           "&": {
-            "overflow": "-moz-scrollbars-none", // Firefox hide default
+            overflow: "-moz-scrollbars-none", // Firefox hide default
           },
         },
       });
