@@ -10,4 +10,10 @@ export default async function WalletLayout({ address, index }: Readonly<Props>) 
   const hasAddressData = (await cookieStore).get("address")?.value;
 
   return <>{!!hasAddressData ? address : index}</>;
+  // return (
+  //   <>
+  //     {address}
+  //     {index}
+  //   </>
+  // );
 }

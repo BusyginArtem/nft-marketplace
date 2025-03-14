@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { AddressInfo, Amount, StakeAccount } from "@/lib/definitions";
 import DisconnectWallet from "@/components/ui/disconnect-wallet";
 
-export default async function Address() {
+export default async function WalletAddressPage() {
   const cookieStore = cookies();
   const addressData = (await cookieStore).get("address")?.value;
 

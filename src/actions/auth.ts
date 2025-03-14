@@ -134,3 +134,7 @@ export const signOutAction = async () => {
 
   await signOut();
 };
+
+export const signInGitHub = async () => {
+  await signIn("github");
+};
