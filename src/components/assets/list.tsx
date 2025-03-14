@@ -35,7 +35,7 @@ export default function List({ assets }: Props) {
               <div className='self-center justify-self-center'>
                 {/* <Button onClick={(e) => e.stopPropagation()}>BUY</Button> */}
                 <Button className='rounded-lg' asChild>
-                  <Link href={APP_PATH.WALLET}>BUY</Link>
+                  <Link  href={APP_PATH.WALLET}>BUY</Link>
                 </Button>
               </div>
             </div>
