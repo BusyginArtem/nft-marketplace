@@ -9,6 +9,7 @@ import Button from "../ui/button";
 
 export default function SignInOutButton() {
   const { data: session } = useSession();
+  console.log("%c session", "color: green; font-weight: bold;", session);
 
   return session ? (
     <SignOut />

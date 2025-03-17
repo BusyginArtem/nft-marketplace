@@ -130,8 +130,6 @@ export async function signUpAction(_state: AuthFormState, formData: FormData) {
 
 export const signOutAction = async () => {
   try {
-    await signOut();
-
     const session = await auth();
 
     if (session) {
@@ -139,6 +137,8 @@ export const signOutAction = async () => {
         user: null,
       });
     }
+
+    await signOut({ redirect: false });
   } catch (error) {
     if (isRedirectError(error)) {
       throw error;
