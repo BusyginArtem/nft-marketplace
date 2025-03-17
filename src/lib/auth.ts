@@ -29,8 +29,8 @@ export const {
       if (account?.provider === "credentials") {
         token.credentials = true;
       }
-console.log('trigger >>>>>>>>>>>>>>>>>>>>>', trigger)
-console.log('session >>>>>>>>>>>>>>>>>>>>>', session)
+// console.log('trigger >>>>>>>>>>>>>>>>>>>>>', trigger)
+// console.log('session >>>>>>>>>>>>>>>>>>>>>', session)
       if (trigger === "update" && session?.user) {
         token.address = session.user.address;
       }

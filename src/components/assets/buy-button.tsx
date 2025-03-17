@@ -23,7 +23,7 @@ export default function BuyButton({ assetId }: { assetId: string }) {
         </Button>
       ) : (
         <Button className='rounded-lg' asChild>
-          <Link scroll={false} href={`${APP_PATH.MARKETS}?connect-modal=true`}>
+          <Link scroll={false} href={`${APP_PATH.MARKETS}?connect-modal=open`}>
             BUY
           </Link>
         </Button>

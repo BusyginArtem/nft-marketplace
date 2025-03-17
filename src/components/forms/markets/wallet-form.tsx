@@ -4,7 +4,7 @@ import { startTransition, useActionState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { type WalletFormSchema, walletFormSchema } from "@/lib/validation";
 import { WalletFormState } from "@/lib/definitions";
@@ -17,6 +17,8 @@ export default function WalletForm() {
 
   const { update, data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isConnectModalActive = searchParams?.get("connect-modal");
 
   const form = useForm<WalletFormSchema>({
     resolver: zodResolver(walletFormSchema),
@@ -29,7 +31,11 @@ export default function WalletForm() {
 
   useEffect(() => {
     if (formState?.success) {
-      router.refresh();
+      if (isConnectModalActive) {
+        router.back();
+      } else {
+        router.refresh();
+      }
 
       (async () => {
         await update({
@@ -40,7 +46,7 @@ export default function WalletForm() {
         });
       })();
     }
-  }, [formState?.success]);
+  }, [formState?.success, isConnectModalActive]);
 
   return (
     <form

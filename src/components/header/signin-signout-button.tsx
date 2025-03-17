@@ -13,7 +13,7 @@ export default function SignInOutButton() {
   return session ? (
     <SignOut />
   ) : (
-    <Button className='rounded-lg' asChild>
+    <Button className='rounded-lg w-[5.5rem]' asChild>
       <Link href={APP_PATH.SIGN_IN}>Sign In</Link>
     </Button>
   );

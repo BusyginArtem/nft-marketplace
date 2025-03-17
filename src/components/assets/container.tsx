@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import { AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 
 import AssetList from "@/components/assets/list";
@@ -56,7 +56,7 @@ export default function Container({ initialAssets }: Props) {
   return (
     <>
       <AssetList assets={assets} /> <div ref={loaderRef} className='h-1' /> <Loading active={loading} />
-      {isConnectModalActive && <WalletModal />}
+      <AnimatePresence>{isConnectModalActive && <WalletModal />}</AnimatePresence>
     </>
   );
 }

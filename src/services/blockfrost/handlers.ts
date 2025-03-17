@@ -66,7 +66,7 @@ export async function getAssetsInfo({ identifiers }: { identifiers: AssetIdentif
     }
 
     if (!!failedOperations.length) {
-      console.log("[FailedOperations]: >>>>>>>>>>>>>>>>>>>>>", failedOperations);
+      console.log("[FailedOperations]:", failedOperations);
     }
 
     return assetsInfo;

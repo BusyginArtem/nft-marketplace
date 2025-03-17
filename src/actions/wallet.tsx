@@ -1,11 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+// import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { WalletFormState } from "@/lib/definitions";
 import { walletFormSchema } from "@/lib/validation";
 import { auth, update } from "@/lib/auth";
-// import { redirect } from "next/navigation";
 
 export async function connectWalletAction(_state: WalletFormState, formData: FormData) {
   const validatedFields = walletFormSchema.safeParse({
@@ -36,7 +36,7 @@ export async function connectWalletAction(_state: WalletFormState, formData: For
       },
     });
 
-    revalidatePath("/wallet", "layout");
+    // revalidatePath("/wallet", "layout");
 
     return {
       success: true,
@@ -72,8 +72,8 @@ export async function disconnectWalletAction() {
   });
 
   if (!result?.user?.address) {
-    revalidatePath("/wallet", "layout");
-    revalidatePath("/market", "layout");
-    // redirect("/wallet");
+    // revalidatePath("/wallet", "layout");
+    // revalidatePath("/market", "layout");
+    redirect("/wallet");
   }
 }

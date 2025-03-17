@@ -143,7 +143,7 @@ export const signOutAction = async () => {
     if (isRedirectError(error)) {
       throw error;
     }
-    console.log("[Error]: >>>>>>>>>>>>>>>>>>>>>", error);
+    console.log("[Error]:", error);
   }
 };
 
@@ -154,6 +154,6 @@ export const signInGitHub = async () => {
     if (isRedirectError(error)) {
       throw error;
     }
-    console.log("[Error]: >>>>>>>>>>>>>>>>>>>>>", error);
+    console.log("[Error]:", error);
   }
 };
