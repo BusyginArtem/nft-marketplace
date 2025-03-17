@@ -1,12 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import Button from "@/components/ui/button";
 import { APP_PATH } from "@/lib/constants";
-import { Suspense } from "react";
 import Loading from "@/components/loading";
 
 enum Error {
