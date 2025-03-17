@@ -7,9 +7,7 @@ import { Github } from "@/components/ui/github";
 import { signInGitHub } from "@/actions/auth";
 
 const GithubSignIn = () => {
-  const [formState, formAction, isPending] = useActionState(signInGitHub, undefined);
-
-  console.log('%c formState', 'color: green; font-weight: bold;', formState)
+  const [, formAction, isPending] = useActionState(signInGitHub, undefined);
 
   return (
     <form action={formAction}>

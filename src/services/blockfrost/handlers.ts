@@ -92,7 +92,6 @@ export async function getAssetsData({ count = 20, page = 1 }: Pagination) {
 
 export async function getAddressData({ address }: { address: AddressIdentifier }) {
   try {
-    
     const { stake_address, ...addressData } = (await blockfrostAPIInstance.addressesExtended(address)) as AddressInfo;
     const stakeAccount = (await blockfrostAPIInstance.accounts(stake_address)) as StakeAccount;
 

@@ -1,21 +1,28 @@
+"use client";
+
+import { useSession } from "next-auth/react";
 import { RefreshCwOff } from "lucide-react";
 
 import Button from "./button";
 import { disconnectWalletAction } from "@/actions/wallet";
 
 export default function DisconnectWallet() {
-  return (
-    <form
-      action={async () => {
-        "use server";
+  const { update, data: session } = useSession();
+  
+  const handleDisconnectWallet = async () => {
+    await disconnectWalletAction();
 
-        await disconnectWalletAction();
-      }}
-    >
-      <Button className='w-full' variant='destructive'>
-        <RefreshCwOff />
-        Disconnect Wallet
-      </Button>
-    </form>
+    await update({
+      user: {
+        ...session?.user,
+        address: null,
+      },
+    });
+  };
+  return (
+    <Button variant='destructive' onClick={handleDisconnectWallet}>
+      <RefreshCwOff />
+      Disconnect Wallet
+    </Button>
   );
 }

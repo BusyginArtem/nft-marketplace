@@ -29,7 +29,7 @@ export type WalletFormState =
         address?: string[];
       };
       message?: string;
-      // fields?: Omit<AddressInfo, "stake_address"> & { stake: StakeAccount };
+      fields?: { address: string };
       success: boolean;
     }
   | undefined;

@@ -1,7 +1,6 @@
 "use server";
 
 import { MongoClient, MongoError } from "mongodb";
-import { cookies } from "next/headers";
 import { CredentialsSignin } from "next-auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 
@@ -9,7 +8,7 @@ import { hashPassword } from "@/lib/auth-password";
 import { AuthFormState } from "@/lib/definitions";
 import { connectMongoDb } from "@/lib/mongodb";
 import { signInFormSchema, signUpFormSchema } from "@/lib/validation";
-import { signIn, signOut } from "@/lib/auth";
+import { auth, signIn, signOut, update } from "@/lib/auth";
 
 export async function signInAction(_state: AuthFormState, formData: FormData) {
   const validatedFields = signInFormSchema.safeParse({
@@ -130,11 +129,31 @@ export async function signUpAction(_state: AuthFormState, formData: FormData) {
 }
 
 export const signOutAction = async () => {
-  (await cookies()).delete("address");
+  try {
+    await signOut();
 
-  await signOut();
+    const session = await auth();
+
+    if (session) {
+      await update({
+        user: null,
+      });
+    }
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
+    console.log("[Error]: >>>>>>>>>>>>>>>>>>>>>", error);
+  }
 };
 
 export const signInGitHub = async () => {
-  await signIn("github");
+  try {
+    await signIn("github");
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
+    console.log("[Error]: >>>>>>>>>>>>>>>>>>>>>", error);
+  }
 };

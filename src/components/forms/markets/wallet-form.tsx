@@ -1,8 +1,10 @@
 "use client";
 
-import { startTransition, useActionState, useRef } from "react";
+import { startTransition, useActionState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { type WalletFormSchema, walletFormSchema } from "@/lib/validation";
 import { WalletFormState } from "@/lib/definitions";
@@ -13,6 +15,9 @@ import FormInput from "../../ui/form-input";
 export default function WalletForm() {
   const [formState, formAction, isPending] = useActionState<WalletFormState, FormData>(connectWalletAction, undefined);
 
+  const { update, data: session } = useSession();
+  const router = useRouter();
+
   const form = useForm<WalletFormSchema>({
     resolver: zodResolver(walletFormSchema),
     defaultValues: {
@@ -21,6 +26,21 @@ export default function WalletForm() {
   });
 
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (formState?.success) {
+      router.refresh();
+
+      (async () => {
+        await update({
+          user: {
+            ...session?.user,
+            address: formState.fields?.address || null,
+          },
+        });
+      })();
+    }
+  }, [formState?.success]);
 
   return (
     <form

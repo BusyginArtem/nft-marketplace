@@ -2,10 +2,14 @@
 
 import { signOutAction } from "@/actions/auth";
 import Button from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 const SignOut = () => {
+  const { update } = useSession();
+
   const handleSignOut = async () => {
     signOutAction();
+    await update({ user: null });
   };
 
   return (

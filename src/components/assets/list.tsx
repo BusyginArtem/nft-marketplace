@@ -1,8 +1,6 @@
 import { Asset } from "@/lib/definitions";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import Button from "../ui/button";
-import Link from "next/link";
-import { APP_PATH } from "@/lib/constants";
+import BuyButton from "./buy-button";
 
 type Props = {
   assets: Asset[];
@@ -13,7 +11,7 @@ export default function List({ assets }: Props) {
     <Accordion type='single' collapsible className='space-y-2'>
       {assets.map((asset) => (
         <AccordionItem value={asset.asset} key={asset.asset}>
-          <AccordionTrigger className='px-8'>
+          <AccordionTrigger className='px-8 items-center'>
             <div className='grid w-full grid-cols-[3fr,_5fr,_2fr,_1fr]'>
               <div className='flex flex-col gap-2 overflow-hidden px-2'>
                 <p className='uppercase text-xs font-medium'>Asset name</p>
@@ -32,14 +30,7 @@ export default function List({ assets }: Props) {
                 <p className='text-lg font-semibold w-full truncate'>{asset.quantity}</p>
               </div>
 
-              <div className='self-center justify-self-center'>
-                {/* <Button onClick={(e) => e.stopPropagation()}>BUY</Button> */}
-                <Button className='rounded-lg' asChild>
-                  <Link scroll={false} href={APP_PATH.WALLET}>
-                    BUY
-                  </Link>
-                </Button>
-              </div>
+              <BuyButton assetId={asset.asset} />
             </div>
           </AccordionTrigger>
           <AccordionContent className='px-8 border-t-2 bg-slate-900'>
