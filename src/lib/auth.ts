@@ -8,7 +8,13 @@ import { verifyPasswords } from "@/lib/auth-password";
 import type { UserEntity } from "@/lib/definitions";
 import authConfig from "./auth.config";
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const {
+  handlers,
+  signIn,
+  signOut,
+  auth,
+  unstable_update: update,
+} = NextAuth({
   // adapter: MongoDBAdapter(client),
   // debug: true,
   session: {
@@ -19,9 +25,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/sign-in",
   },
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, trigger, session }) {
       if (account?.provider === "credentials") {
         token.credentials = true;
+      }
+// console.log('trigger >>>>>>>>>>>>>>>>>>>>>', trigger)
+// console.log('session >>>>>>>>>>>>>>>>>>>>>', session)
+      if (trigger === "update" && session?.user) {
+        token.address = session.user.address;
       }
 
       return token;
@@ -30,6 +41,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (token?.sub) {
         session.user.id = token.sub;
       }
+
+      if (token) {
+        session.user.address = token.address || null;
+      }
+
       return session;
     },
   },

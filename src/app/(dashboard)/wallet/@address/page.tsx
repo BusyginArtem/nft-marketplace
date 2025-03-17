@@ -1,24 +1,24 @@
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
-import { AddressInfo, Amount, StakeAccount } from "@/lib/definitions";
+import { Amount } from "@/lib/definitions";
 import DisconnectWallet from "@/components/ui/disconnect-wallet";
+import { auth } from "@/lib/auth";
+import { getAddressData } from "@/services/blockfrost/handlers";
 
 export default async function WalletAddressPage() {
-  const cookieStore = cookies();
-  const addressData = (await cookieStore).get("address")?.value;
+  const session = await auth();
 
-  if (!addressData) {
+  if (!session?.user?.address) {
     notFound();
   }
 
-  const { stake, address, type, amount } = JSON.parse(addressData) as Omit<AddressInfo, "stake_address"> & {
-    stake: StakeAccount;
-  };
+  const addressData = await getAddressData({ address: session.user.address });
+
+  const { stake, address, type, amount } = addressData;
 
   return (
     <section className='container py-10 space-y-8'>
-      <div className='flex justify-between'>
+      <div className='flex justify-between items-center'>
         <h1 className='px-8'>Wallet</h1>
 
         <DisconnectWallet />
@@ -41,7 +41,10 @@ export default async function WalletAddressPage() {
 
             <p className='text-lg'>
               <strong>Total Amount:</strong>{" "}
-              {(amount?.reduce((sum: number, amount: Amount) => sum + Number(amount.quantity), 0) / 1_000_000).toFixed(6)} ADA
+              {(amount?.reduce((sum: number, amount: Amount) => sum + Number(amount.quantity), 0) / 1_000_000).toFixed(
+                6
+              )}{" "}
+              ADA
             </p>
             <div>
               <strong className='text-lg'>Assets</strong>{" "}

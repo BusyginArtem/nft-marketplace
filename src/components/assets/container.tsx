@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { AnimatePresence } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 
 import AssetList from "@/components/assets/list";
 import { Asset } from "@/lib/definitions";
 import { fetchMoreAssetsData } from "@/actions/market";
 import Loading from "../loading";
+import WalletModal from "../wallet/wallet-modal";
 
 type Props = {
   initialAssets: Asset[];
@@ -15,6 +18,9 @@ export default function Container({ initialAssets }: Props) {
   const [assets, setItems] = useState<Asset[]>(initialAssets);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  const searchParams = useSearchParams();
+  const isConnectModalActive = searchParams?.get("connect-modal");
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
@@ -50,6 +56,7 @@ export default function Container({ initialAssets }: Props) {
   return (
     <>
       <AssetList assets={assets} /> <div ref={loaderRef} className='h-1' /> <Loading active={loading} />
+      <AnimatePresence>{isConnectModalActive && <WalletModal />}</AnimatePresence>
     </>
   );
 }

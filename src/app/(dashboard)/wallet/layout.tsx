@@ -1,13 +1,12 @@
-import { cookies } from "next/headers";
+import { auth } from "@/lib/auth";
 
 type Props = {
-  index: React.ReactNode;
+  connect: React.ReactNode;
   address: React.ReactNode;
 };
 
-export default async function WalletLayout({ address, index }: Readonly<Props>) {
-  const cookieStore = cookies();
-  const hasAddressData = (await cookieStore).get("address")?.value;
+export default async function WalletLayout({ address, connect }: Readonly<Props>) {
+  const session = await auth();
 
-  return <>{!!hasAddressData ? address : index}</>;
+  return <>{!!session?.user?.address ? address : connect}</>;
 }
