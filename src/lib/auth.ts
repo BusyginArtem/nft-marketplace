@@ -29,11 +29,14 @@ export const {
       if (account?.provider === "credentials") {
         token.credentials = true;
       }
-// console.log('trigger >>>>>>>>>>>>>>>>>>>>>', trigger)
-// console.log('session >>>>>>>>>>>>>>>>>>>>>', session)
+
       if (trigger === "update" && session?.user) {
         token.address = session.user.address;
       }
+
+      // if (trigger === "update" && !session?.user) {
+      //   token = { email: null, name: null, address: null };
+      // }
 
       return token;
     },
@@ -77,6 +80,7 @@ export const {
         return {
           id: user._id.toString(),
           email: user.email,
+          address: null,
         };
       },
     }),
