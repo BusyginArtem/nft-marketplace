@@ -1,19 +1,16 @@
 "use client";
 
-import { useSession } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-import { signOutAction } from "@/actions/auth";
 import Button from "@/components/ui/button";
 
 const SignOut = () => {
-  const { update } = useSession();
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSignOut = async () => {
-    signOutAction();
-    await update({ user: null });
-    // router.refresh();
+    await signOut({ redirect: false });
+    router.refresh();
   };
 
   return (
