@@ -8,7 +8,7 @@ import { hashPassword } from "@/lib/auth-password";
 import { AuthFormState } from "@/lib/definitions";
 import { connectMongoDb } from "@/lib/mongodb";
 import { signInFormSchema, signUpFormSchema } from "@/lib/validation";
-import { auth, signIn, signOut, update } from "@/lib/auth";
+import { signIn } from "@/lib/auth";
 
 export async function signInAction(_state: AuthFormState, formData: FormData) {
   const validatedFields = signInFormSchema.safeParse({
@@ -128,24 +128,24 @@ export async function signUpAction(_state: AuthFormState, formData: FormData) {
   }
 }
 
-export const signOutAction = async () => {
-  try {
-    const session = await auth();
+// export const signOutAction = async () => {
+//   try {
+//     const session = await auth();
 
-    if (session) {
-      await update({
-        user: null,
-      });
-    }
+//     if (session) {
+//       await update({
+//         user: null,
+//       });
+//     }
 
-    await signOut({ redirect: false });
-  } catch (error) {
-    if (isRedirectError(error)) {
-      throw error;
-    }
-    console.log("[Error]:", error);
-  }
-};
+//     await signOut({ redirect: false });
+//   } catch (error) {
+//     if (isRedirectError(error)) {
+//       throw error;
+//     }
+//     console.log("[Error]:", error);
+//   }
+// };
 
 export const signInGitHub = async () => {
   try {
