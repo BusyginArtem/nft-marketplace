@@ -84,7 +84,7 @@ export async function getAssetsData({ count = 20, page = 1 }: Pagination) {
   try {
     const assetIdentifiers = await getAssetsIdentifiers({ page, count });
     const assets = await getAssetsInfo({ identifiers: assetIdentifiers });
-throw new Error("Assets data not found");
+
     return assets;
   } catch (error) {
     console.log(error);
