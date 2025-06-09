@@ -18,6 +18,9 @@ export async function getAssetsIdentifiers({
 }): Promise<AssetIdentifier[] | never> {
   try {
     const assetsRawData = (await blockfrostAPIInstance.assets({ count, page })) as AssetsRawData[];
+    // await new Promise((resolve) => {
+    //   setTimeout(() => resolve(""), 500);
+    // });
 
     return assetsRawData.map(({ asset }) => asset);
   } catch (error) {
@@ -81,7 +84,7 @@ export async function getAssetsData({ count = 20, page = 1 }: Pagination) {
   try {
     const assetIdentifiers = await getAssetsIdentifiers({ page, count });
     const assets = await getAssetsInfo({ identifiers: assetIdentifiers });
-
+throw new Error("Assets data not found");
     return assets;
   } catch (error) {
     console.log(error);
