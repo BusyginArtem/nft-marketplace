@@ -18,6 +18,9 @@ export async function getAssetsIdentifiers({
 }): Promise<AssetIdentifier[] | never> {
   try {
     const assetsRawData = (await blockfrostAPIInstance.assets({ count, page })) as AssetsRawData[];
+    // await new Promise((resolve) => {
+    //   setTimeout(() => resolve(""), 500);
+    // });
 
     return assetsRawData.map(({ asset }) => asset);
   } catch (error) {

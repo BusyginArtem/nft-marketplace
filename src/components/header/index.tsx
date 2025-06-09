@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import Logo from "@/components/logo";
-import HeaderLink from "../header-link";
+import HeaderLink from "./header-link";
 import SignInOutButton from "./signin-signout-button";
 import { APP_PATH, NAV_ITEMS } from "@/lib/constants";
 

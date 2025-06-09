@@ -24,6 +24,7 @@ export default function WalletForm() {
     resolver: zodResolver(walletFormSchema),
     defaultValues: {
       address: "",
+      ...(formState?.fields ?? {}),
     },
   });
 
@@ -46,7 +47,7 @@ export default function WalletForm() {
         });
       })();
     }
-  }, [formState?.success, isConnectModalActive]);
+  }, [formState?.fields?.address, formState?.success, isConnectModalActive, router, session?.user, update]);
 
   return (
     <form
@@ -66,6 +67,7 @@ export default function WalletForm() {
         placeholder='Wallet address'
         type='text'
         error={form.formState?.errors?.address}
+        defaultValue={formState?.fields?.address || ""}
         {...form.register("address")}
       />
 

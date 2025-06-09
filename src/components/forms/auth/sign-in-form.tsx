@@ -18,6 +18,7 @@ export default function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
+      ...(formState?.fields ?? {}),
     },
   });
 
@@ -42,6 +43,7 @@ export default function SignInForm() {
         type='email'
         autoComplete='email'
         error={form.formState?.errors?.email}
+        defaultValue={formState?.fields?.email || ""}
         {...form.register("email")}
       />
 
@@ -50,6 +52,7 @@ export default function SignInForm() {
         type='password'
         autoComplete='new-password'
         error={form.formState?.errors?.password}
+        defaultValue={formState?.fields?.password || ""}
         {...form.register("password")}
       />
 

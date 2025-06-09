@@ -69,11 +69,16 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0px" },
         },
+        glimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
         slideUp: "slideUp 0.7s ease-out forwards",
         accordionDown: "accordionDown 300ms cubic-bezier(0.87, 0, 0.13, 1)",
         accordionUp: "accordionUp 300ms cubic-bezier(0.87, 0, 0.13, 1)",
+        glimmer: "glimmer 2s linear infinite",
       },
     },
   },

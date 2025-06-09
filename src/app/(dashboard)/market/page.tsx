@@ -18,8 +18,8 @@ const getInitialAssetsData = unstable_cache(
   }
 );
 
-export default async function Markets() {
-  const initialAssets = await getInitialAssetsData();
+export default function Markets() {
+  const initialAssetsPromise = getInitialAssetsData();
 
   return (
     <section className='container py-10 space-y-8'>
@@ -27,7 +27,7 @@ export default async function Markets() {
 
       <div className='flex flex-col'>
         <Suspense fallback={<Loading active />}>
-          <Container initialAssets={initialAssets} />
+          <Container initialAssetsPromise={initialAssetsPromise} />
         </Suspense>
       </div>
     </section>

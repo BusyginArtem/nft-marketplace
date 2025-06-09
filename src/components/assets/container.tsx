@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, use } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 
@@ -11,10 +11,12 @@ import Loading from "../loading";
 import WalletModal from "../wallet/wallet-modal";
 
 type Props = {
-  initialAssets: Asset[];
+  initialAssetsPromise: Promise<Asset[]>;
 };
 
-export default function Container({ initialAssets }: Props) {
+export default function Container({ initialAssetsPromise }: Props) {
+  const initialAssets = use<Asset[]>(initialAssetsPromise);
+
   const [assets, setItems] = useState<Asset[]>(initialAssets);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);

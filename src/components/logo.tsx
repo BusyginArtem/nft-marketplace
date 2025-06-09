@@ -16,6 +16,9 @@ export default function Logo() {
       <rect x='24' y='30' width='6' height='6' fill='#FF6B6B' />
       <rect x='30' y='30' width='6' height='6' fill='#4A90E2' />
 
+      <rect x='36' y='20' width='10' height='8' rx='2' fill='#4A90E2' />
+      <circle cx='41' cy='24' r='2' fill='#FF6B6B' />
+
       <circle cx='42' cy='42' r='2.5' fill='#4A90E2' />
       <circle cx='48' cy='42' r='2.5' fill='#4A90E2' />
       <circle cx='54' cy='42' r='2.5' fill='#4A90E2' />
